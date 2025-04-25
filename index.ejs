@@ -1,0 +1,1730 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+  <title>StockPulse</title> 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+  <style> 
+    /* Reset & basic setup */ 
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+  } 
+   
+  body { 
+    font-family: 'Segoe UI', sans-serif; 
+    background-color: #0d1117; 
+    color: #ffffff; 
+  } 
+   
+  /* Hero Section */ 
+  .hero { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 4rem 10%; 
+    background: linear-gradient(135deg, #0d1117, #161b22); 
+    min-height: 100vh; 
+    flex-wrap: wrap; 
+  } 
+   
+  .hero-content { 
+    max-width: 50%; 
+  } 
+   
+  .hero h1 { 
+    font-size: 3.5rem; 
+    margin-bottom: 1rem; 
+    color: #58a6ff; 
+  } 
+   
+  .tagline { 
+    font-size: 1.3rem; 
+    margin-bottom: 2rem; 
+    color: #c9d1d9; 
+  } 
+   
+  .cta-buttons .btn { 
+    padding: 0.8rem 1.6rem; 
+    margin-right: 1rem; 
+    border: none; 
+    border-radius: 8px; 
+    font-size: 1rem; 
+    text-decoration: none; 
+    transition: background 0.3s ease; 
+  } 
+   
+  .btn.primary { 
+    background-color: #238636; 
+    color: white; 
+  } 
+   
+  .btn.primary:hover { 
+    background-color: #2ea043; 
+  } 
+   
+  .btn.secondary { 
+    background-color: #30363d; 
+    color: white; 
+  } 
+   
+  .btn.secondary:hover { 
+    background-color: #484f58; 
+  } 
+   
+  .hero-animation { 
+    max-width: 40%; 
+    position: relative; 
+  } 
+   
+  .phone-preview { 
+    width: 100%; 
+    margin-top: 1rem; 
+    border-radius: 12px; 
+    box-shadow: 0 0 20px rgba(90, 90, 255, 0.3); 
+  } 
+   
+  /* Responsive */ 
+  @media screen and (max-width: 768px) { 
+    .hero { 
+      flex-direction: column; 
+      text-align: center; 
+    } 
+   
+    .hero-content, .hero-animation { 
+      max-width: 100%; 
+    } 
+   
+    .hero-animation { 
+      margin-top: 2rem; 
+    } 
+  } 
+ 
+   
+/* How It Works Section */ 
+.how-it-works { 
+    background-color: #161b22; 
+    padding: 4rem 10%; 
+    text-align: center; 
+  } 
+   
+  .how-it-works h2 { 
+    font-size: 2.5rem; 
+    margin-bottom: 3rem; 
+    color: #58a6ff; 
+  } 
+   
+  .work-flow { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 2rem; 
+  } 
+   
+  .step { 
+    background-color: #21262d; 
+    padding: 2rem; 
+    border-radius: 12px; 
+    width: 250px; 
+    transition: transform 0.3s ease; 
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); 
+  } 
+   
+  .step:hover { 
+    transform: translateY(-10px); 
+  } 
+   
+  .step .icon { 
+    font-size: 2rem; 
+    margin-bottom: 1rem; 
+  } 
+   
+  .step h3 { 
+    color: #79c0ff; 
+    margin-bottom: 0.5rem; 
+  } 
+   
+  .step p { 
+    font-size: 0.95rem; 
+    color: #c9d1d9; 
+  } 
+   
+  .arrow { 
+    font-size: 2rem; 
+    color: #8b949e; 
+  } 
+   
+  /* Responsive */ 
+  @media screen and (max-width: 768px) { 
+    .work-flow { 
+      flex-direction: column; 
+    } 
+   
+    .arrow { 
+      transform: rotate(90deg); 
+    } 
+  } 
+ 
+   
+ 
+/* Live Stock Feed */ 
+.live-stock-feed { 
+    background-color: #0d1117; 
+    padding: 4rem 10%; 
+    text-align: center; 
+  } 
+   
+  .live-stock-feed h2 { 
+    font-size: 2.5rem; 
+    margin-bottom: 2rem; 
+    color: #58a6ff; 
+  } 
+   
+  .ticker-container { 
+    display: flex; 
+    /* flex-direction: column; */ 
+    height : 15rem; 
+    gap:1rem; 
+    overflow: scroll; 
+    scrollbar-color: transparent transparent; 
+  } 
+  /* .main { 
+    height : 14rem; 
+    width : 100%; 
+    display: flex; 
+    flex-direction: row; 
+}*/ 
+ 
+  .ticker { 
+    /* display: flex; */ 
+    background-color: #161b22; 
+    padding: 1rem 1.5rem; 
+    border-radius: 10px; 
+    width: 200px; 
+    text-align: left; 
+    box-shadow: 0 0 10px rgba(88, 166, 255, 0.05); 
+    transition: transform 0.3s ease; 
+  } 
+   
+  .ticker2 { 
+    /* display: flex; */ 
+    background-color: #161b22; 
+    padding: 1rem 1.5rem; 
+    border-radius: 10px; 
+    width: 200px; 
+    text-align: left; 
+    box-shadow: 0 0 10px rgba(88, 166, 255, 0.05); 
+    transition: transform 0.3s ease; 
+  } 
+ 
+  .ticker:hover { 
+    transform: scale(1.05); 
+  } 
+   
+  .ticker .symbol { 
+    font-weight: bold; 
+    color: #c9d1d9; 
+    font-size: 1.1rem; 
+  } 
+   
+  .ticker .price { 
+    margin-top: 0.5rem; 
+    font-size: 1rem; 
+  } 
+   
+  .ticker .price.positive { 
+    color: #2ecc71; 
+  } 
+   
+  .ticker .price.negative { 
+    color: #e74c3c; 
+  } 
+ 
+   
+  .ticker2:hover { 
+    transform: scale(1.05); 
+  } 
+   
+  .ticker2 .symbol { 
+    font-weight: bold; 
+    color: #c9d1d9; 
+    font-size: 1.1rem; 
+  } 
+   
+  .ticker2 .price { 
+    margin-top: 0.5rem; 
+    font-size: 1rem; 
+  } 
+   
+  .ticker2 .price.positive { 
+    color: #2ecc71; 
+  } 
+   
+  .ticker2 .price.negative { 
+    color: #e74c3c; 
+  } 
+ 
+/* Sentiment Dashboard */ 
+.sentiment-dashboard { 
+    background-color: #161b22; 
+    padding: 4rem 10%; 
+    text-align: center; 
+  } 
+   
+  .sentiment-dashboard h2 { 
+    font-size: 2.5rem; 
+    margin-bottom: 2rem; 
+    color: #58a6ff; 
+  } 
+   
+  .sentiment-container { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 3rem; 
+    align-items: center; 
+  } 
+   
+  .chart-box { 
+    background-color: #0d1117; 
+    padding: 1.5rem; 
+    border-radius: 12px; 
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.1); 
+  } 
+   
+  .sentiment-stats { 
+    color: #c9d1d9; 
+    text-align: left; 
+  } 
+   
+  .sentiment-stats h3 { 
+    margin-bottom: 1rem; 
+    color: #79c0ff; 
+  } 
+   
+  .sentiment-stats ul { 
+    list-style: none; 
+    padding: 0; 
+    font-size: 1.1rem; 
+  } 
+   
+  .sentiment-stats li { 
+    margin: 0.5rem 0; 
+  } 
+   
+  .sentiment-alert { 
+    margin-top: 1.5rem; 
+    color: #e74c3c; 
+    font-weight: bold; 
+    display: none; 
+  } 
+   
+  /* Responsive */ 
+  @media screen and (max-width: 768px) { 
+    .sentiment-container { 
+      flex-direction: column; 
+    } 
+  } 
+ 
+   
+ 
+  #investment-insights { 
+    padding: 40px 20px; 
+    background-color: #ffffff; 
+    max-width: 1200px; 
+    margin: 50px auto; 
+    border-radius: 10px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+  } 
+ 
+  h2 { 
+    text-align: center; 
+    font-size: 2rem; 
+    color: #333; 
+    margin-bottom: 20px; 
+  } 
+ 
+  .insight-cards { 
+    display: flex; 
+    justify-content: space-around; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+  } 
+ 
+  .insight-card { 
+    background-color: #f2f2f2; 
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+    text-align: center; 
+    flex-basis: 30%; 
+    min-width: 250px; 
+    transition: transform 0.3s ease; 
+  } 
+ 
+  .insight-card:hover { 
+    transform: translateY(-5px); 
+  } 
+ 
+  .insight-card h3 { 
+    font-size: 1.3rem; 
+    color: #333; 
+  } 
+ 
+  .insight-card p { 
+    font-size: 1.1rem; 
+    color: #666; 
+  } 
+ 
+  .insight-card .icon { 
+    font-size: 3rem; 
+    color: #56ccf2; 
+    margin-bottom: 15px; 
+  } 
+ 
+  .trend-card, .signal-card { 
+    background-color: #ffffff; 
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+    text-align: center; 
+    margin: 20px; 
+  } 
+ 
+  .trend-card { 
+    background-color: #e3f2fd; 
+  } 
+ 
+  .signal-card { 
+    background-color: #fce4ec; 
+  } 
+ 
+  section#case-studies { 
+    padding: 40px 20px; 
+    background-color: #ffffff; 
+    max-width: 1200px; 
+    margin: 50px auto; 
+    border-radius: 10px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+  } 
+ 
+  h2 { 
+    text-align: center; 
+    font-size: 2rem; 
+    color: #333; 
+    margin-bottom: 20px; 
+  } 
+ 
+  .case-study { 
+    background-color: #e3f2fd; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+  } 
+ 
+  .case-study h3 { 
+    font-size: 1.5rem; 
+    color: #333; 
+    margin-bottom: 10px; 
+  } 
+ 
+  .case-study p { 
+    font-size: 1rem; 
+    color: #666; 
+    line-height: 1.6; 
+  } 
+ 
+  .case-study .icon { 
+    font-size: 3rem; 
+    color: #0d47a1; 
+    margin-bottom: 20px; 
+  } 
+ 
+  .case-study button { 
+    background-color: #0d47a1; 
+    color: #fff; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    align-self: flex-start; 
+    margin-top: 15px; 
+    transition: background-color 0.3s; 
+  } 
+ 
+  .case-study button:hover { 
+    background-color: #1565c0; 
+  } 
+ 
+  @media (max-width: 768px) { 
+    .case-study { 
+      padding: 15px; 
+    } 
+  } 
+ 
+  section#tech-stack { 
+    padding: 50px 20px; 
+    background-color: #ffffff; 
+    max-width: 1200px; 
+    margin: 50px auto; 
+    border-radius: 10px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+  } 
+ 
+  h2 { 
+    text-align: center; 
+    font-size: 2rem; 
+    color: #333; 
+    margin-bottom: 40px; 
+  } 
+ 
+  .tech-list { 
+    display: flex; 
+    justify-content: space-around; 
+    align-items: center; 
+    flex-wrap: wrap; 
+  } 
+ 
+  .tech-item { 
+    text-align: center; 
+    background-color: #e3f2fd; 
+    padding: 30px; 
+    margin: 10px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    width: 200px; 
+  } 
+ 
+  .tech-item img { 
+    width: 50px; 
+    height: 50px; 
+    margin-bottom: 20px; 
+  } 
+ 
+  .tech-item h3 { 
+    font-size: 1.2rem; 
+    color: #333; 
+  } 
+ 
+  .tech-item p { 
+    font-size: 1rem; 
+    color: #666; 
+    margin-top: 10px; 
+  } 
+ 
+  @media (max-width: 768px) { 
+    .tech-item { 
+      width: 150px; 
+      padding: 20px; 
+    } 
+  } 
+ 
+  footer { 
+    background-color: #2d2d2d; 
+    color: #fff; 
+    padding: 30px 20px; 
+    text-align: center; 
+  } 
+ 
+  footer .social-links { 
+    margin: 20px 0; 
+  } 
+ 
+  footer .social-links a { 
+    text-decoration: none; 
+    color: #fff; 
+    margin: 0 15px; 
+    font-size: 24px; 
+  } 
+ 
+  footer .social-links a:hover { 
+    color: #58a6ff; 
+  } 
+ 
+  footer .footer-links { 
+    margin: 20px 0; 
+  } 
+ 
+  footer .footer-links a { 
+    text-decoration: none; 
+    color: #ccc; 
+    margin: 0 15px; 
+  } 
+ 
+  footer .footer-links a:hover { 
+    color: #fff; 
+  } 
+ 
+  .floating-widget { 
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px; 
+    background-color: #2c3e50; 
+    color: #fff; 
+    padding: 15px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    width: 250px; 
+    font-size: 14px; 
+    display: none; 
+  } 
+ 
+  .floating-widget p { 
+    margin: 5px 0; 
+  } 
+ 
+  .floating-widget .close-btn { 
+    position: absolute; 
+    top: 5px; 
+    right: 5px; 
+    font-size: 18px; 
+    cursor: pointer; 
+    color: #ccc; 
+  } 
+ 
+  .floating-widget .close-btn:hover { 
+    color: #fff; 
+  } 
+ 
+  @media (max-width: 768px) { 
+    footer { 
+      padding: 20px; 
+    } 
+  } 
+  </style> 
+</head> 
+<body> 
+  <section class="hero"> 
+    <div class="hero-content"> 
+      <h1>StockPulse</h1> 
+      <p class="tagline">Real-Time Stock Sentiment & Price Tracker</p> 
+      <div class="cta-buttons"> 
+        <a href="#" class="btn primary">Get Started</a> 
+        <a href="#" class="btn secondary">Live Demo</a> 
+      </div> 
+    </div> 
+    <div class="hero-animation"> 
+      <canvas id="chartCanvas" width="300" height="150"></canvas> 
+      <img src="assets/images/phone-preview.png" alt="App Preview" class="phone-preview"> 
+    </div> 
+  </section>
+  
+  <section class="how-it-works"> 
+    <h2>How It Works</h2> 
+    <div class="work-flow"> 
+      <div class="step"> 
+        <div class="icon">📈</div> 
+        <h3>Data Streaming</h3> 
+        <p>Fluvio fetches real-time stock prices and social sentiment streams.</p> 
+      </div> 
+  
+      <div class="arrow">➡️</div> 
+  
+      <div class="step"> 
+        <div class="icon">⚙️</div> 
+        <h3>Stateful Processing</h3> 
+        <p>Using Stateful Dataflow, StockPulse processes trends and triggers alerts instantly.</p> 
+      </div> 
+  
+      <div class="arrow">➡️</div> 
+  
+      <div class="step"> 
+        <div class="icon">🧠</div> 
+        <h3>Interactive UI</h3> 
+        <p>Insights are delivered to your dashboard in real-time, ready for action.</p> 
+      </div> 
+    </div> 
+  </section>
+  
+  <section class="live-stock-feed"> 
+    <h2>Live Stock Data Feed</h2> 
+    <div class="ticker-container" id="stockTicker"></div> 
+  </section>
+  
+  <section class="sentiment-dashboard"> 
+    <h2>Sentiment Analytics Dashboard</h2> 
+    <div class="sentiment-container"> 
+      <div class="chart-box"> 
+        <canvas id="sentimentChart" width="300" height="300"></canvas> 
+      </div> 
+      <div class="sentiment-stats"> 
+        <h3>Company: <span id="companyName">AAPL</span></h3> 
+        <ul id="sentimentList"> 
+          <li>😊 Positive: <span id="posPercent">65%</span></li> 
+          <li>😐 Neutral: <span id="neuPercent">25%</span></li> 
+          <li>😟 Negative: <span id="negPercent">10%</span></li> 
+        </ul> 
+        <div class="sentiment-alert" id="alertSpike">🚨 Spike in Negative Sentiment!</div> 
+      </div> 
+    </div> 
+  </section>
+  
+  <section id="investment-insights"> 
+    <h2>Investment Insights</h2> 
+    <div class="insight-cards"> 
+      <div class="insight-card signal-card"> 
+        <div class="icon">🔁</div> 
+        <h3>Buy/Sell Signal</h3> 
+        <p id="buy-sell-signal">Fetching data...</p> 
+      </div> 
+      <div class="insight-card trend-card"> 
+        <div class="icon">📊</div> 
+        <h3>Recent Trend</h3> 
+        <p id="trend-summary">Fetching data...</p> 
+      </div> 
+    </div> 
+  
+    <div class="insight-cards"> 
+      <div class="insight-card"> 
+        <div class="icon">📈</div> 
+        <h3>Market Trend</h3> 
+        <p>Tracking the overall market movement.</p> 
+      </div> 
+      <div class="insight-card"> 
+        <div class="icon">📉</div> 
+        <h3>Stock Activity</h3> 
+        <p>Monitoring active stocks and their shifts.</p> 
+      </div> 
+      <div class="insight-card"> 
+        <div class="icon">🌪️</div> 
+        <h3>Volatility</h3> 
+        <p>Tracking market volatility and spikes.</p> 
+      </div> 
+    </div> 
+  </section>
+  
+  <section id="case-studies"> 
+    <h2>Case Studies / Use Examples</h2> 
+    <div class="case-study"> 
+      <div class="icon">🛡️</div> 
+      <h3>How Real-Time Alerts Helped John Exit Before a Drop</h3> 
+      <p>John was able to avoid a major loss thanks to a real-time alert that signaled a sharp decline in stock prices. By acting on the alert, he successfully exited his position right before the drop, saving his investment.</p> 
+      <button>Read Full Story</button> 
+    </div> 
+    <div class="case-study"> 
+      <div class="icon">🚀</div> 
+      <h3>Detecting Meme Stock Buzz Early</h3> 
+      <p>A meme stock saw an unexpected surge. Using sentiment analysis, we detected the buzz early, allowing our users to capitalize on the price spike before it became mainstream. This resulted in massive gains for early adopters.</p> 
+      <button>Read Full Story</button> 
+    </div> 
+  </section>
+  
+  <section id="tech-stack"> 
+    <h2>About Tech Stack</h2> 
+    <div class="tech-list"> 
+      <div class="tech-item"> 
+        <img src="https://www.fluvio.io/images/logo.png" alt="Fluvio Logo"> 
+        <h3>Fluvio</h3> 
+        <p>Live streaming tool for real-time event processing.</p> 
+      </div> 
+      <div class="tech-item"> 
+        <img src="https://cdn.iconscout.com/icon/free/png-256/event-processing-1452528.png" alt="Stateful Dataflow"> 
+        <h3>Stateful Dataflow</h3> 
+        <p>Event processing tool to handle real-time data streams.</p> 
+      </div> 
+      <div class="tech-item"> 
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin_Icon.png" alt="Kotlin Logo"> 
+        <h3>Kotlin</h3> 
+        <p>Programming language for building mobile applications.</p> 
+      </div> 
+      <div class="tech-item"> 
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/HTML5_logo_and_wordmark.svg" alt="HTML Logo"> 
+        <h3>HTML/CSS/JS</h3> 
+        <p>Core technologies for web development.</p> 
+      </div> 
+    </div> 
+  </section>
+  
+  <footer> 
+    <div class="social-links"> 
+      <a href="https://github.com" target="_blank" title="GitHub"> 
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/GitHub_Logo_2018.png" alt="GitHub Logo" width="30" height="30"> 
+      </a> 
+      <a href="https://www.linkedin.com" target="_blank" title="LinkedIn"> 
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo_2013.png" alt="LinkedIn Logo" width="30" height="30"> 
+      </a> 
+      <a href="https://twitter.com" target="_blank" title="Twitter"> 
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Twitter_Logo_2021.svg" alt="Twitter Logo" width="30" height="30"> 
+      </a> 
+    </div> 
+    <div class="footer-links"> 
+      <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> |  
+      <a href="/terms" title="Terms of Service">Terms</a> 
+    </div> 
+  </footer>
+  
+  <!-- Floating Widget for Live Updates --> 
+  <div class="floating-widget" id="live-updates-widget"> 
+    <span class="close-btn" onclick="closeWidget()">×</span> 
+    <p><strong>📈 Tesla ↑ 2.3%</strong></p> 
+    <p><strong>Sentiment: 😃 Positive</strong></p> 
+    <p>🔥 “Trending on Reddit: GME”</p> 
+  </div>
+   
+   
+  <script> 
+ 
+    const chartCanvas = document.getElementById('chartCanvas'); 
+const chartCtx = chartCanvas.getContext('2d'); 
+ 
+let x = 0; 
+const data = []; 
+ 
+function drawChart() { 
+  chartCtx.clearRect(0, 0, chartCanvas.width, chartCanvas.height); 
+ 
+  chartCtx.beginPath(); 
+  chartCtx.moveTo(0, 75); 
+  for (let i = 0; i < data.length; i++) { 
+    chartCtx.lineTo(i * 10, data[i]); 
+  } 
+  chartCtx.strokeStyle = '#58a6ff'; 
+  chartCtx.lineWidth = 2; 
+  chartCtx.stroke(); 
+} 
+ 
+function animateChart() { 
+  if (data.length > 30) data.shift(); 
+  const last = data[data.length - 1] || 75; 
+  const next = last + (Math.random() * 10 - 5); 
+  data.push(next); 
+  drawChart(); 
+  requestAnimationFrame(animateChart); 
+} 
+ 
+animateChart(); 
+ 
+// Simple fade-in animation when scrolling into view 
+const steps = document.querySelectorAll(".step"); 
+ 
+const observer = new IntersectionObserver(entries => { 
+  entries.forEach(entry => { 
+    if (entry.isIntersecting) { 
+      entry.target.style.opacity = 1; 
+      entry.target.style.transform = "translateY(0)"; 
+    } 
+  }); 
+}, { 
+  threshold: 0.2 
+}); 
+ 
+steps.forEach(step => { 
+  step.style.opacity = 0; 
+  step.style.transform = "translateY(30px)"; 
+  observer.observe(step); 
+}); 
+ 
+const data1 = [ 
+    { 
+      "open": 197.2, 
+      "high": 198.8335, 
+      "low": 194.42, 
+      "close": 196.98, 
+      "volume": 52164675, 
+      "adj_high": 198.8335, 
+      "adj_low": 194.42, 
+      "adj_close": 196.98, 
+      "adj_open": 197.2, 
+      "adj_volume": 52164675, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AAPL", 
+      "exchange": "XNAS", 
+      "date": "2025-04-17T00:00:00+0000" 
+    }, 
+    { 
+      "open": 198.36, 
+      "high": 200.7, 
+      "low": 192.37, 
+      "close": 194.27, 
+      "volume": 58802034, 
+      "adj_high": 200.7, 
+      "adj_low": 192.37, 
+      "adj_close": 194.27, 
+      "adj_open": 198.36, 
+      "adj_volume": 59732423, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AAPL", 
+      "exchange": "XNAS", 
+      "date": "2025-04-16T00:00:00+0000" 
+    }, 
+    { 
+      "open": 201.855, 
+      "high": 203.505, 
+      "low": 199.82, 
+      "close": 202.14, 
+      "volume": 50304417, 
+      "adj_high": 203.51, 
+      "adj_low": 199.8, 
+      "adj_close": 202.14, 
+      "adj_open": 201.855, 
+      "adj_volume": 51343872, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AAPL", 
+      "exchange": "XNAS", 
+      "date": "2025-04-15T00:00:00+0000" 
+    }, 
+    { 
+      "open": 211.44, 
+      "high": 212.94, 
+      "low": 201.1621, 
+      "close": 202.52, 
+      "volume": 100650083, 
+      "adj_high": 212.94, 
+      "adj_low": 201.1621, 
+      "adj_close": 202.52, 
+      "adj_open": 211.44, 
+      "adj_volume": 101352911, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AAPL", 
+      "exchange": "XNAS", 
+      "date": "2025-04-14T00:00:00+0000" 
+    }, 
+    { 
+      "open": 186.1, 
+      "high": 199.54, 
+      "low": 186.06, 
+      "close": 198.15, 
+      "volume": 87300000, 
+      "adj_high": 199.54, 
+      "adj_low": 186.06, 
+      "adj_close": 198.15, 
+      "adj_open": 186.1, 
+      "adj_volume": 87435915, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AAPL", 
+      "exchange": "XNAS", 
+      "date": "2025-04-11T00:00:00+0000" 
+    }, 
+    { 
+      "open": 189.165, 
+      "high": 194.7799, 
+      "low": 183, 
+      "close": 190.42, 
+      "volume": 117183840, 
+      "adj_high": 194.7799, 
+      "adj_low": 183, 
+      "adj_close": 190.42, 
+      "adj_open": 189.065, 
+      "adj_volume": 121879981, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AAPL", 
+      "exchange": "XNAS", 
+      "date": "2025-04-10T00:00:00+0000" 
+    }, 
+  ] 
+ 
+ 
+ 
+  const  google = [ 
+    { 
+      "open": 198.53, 
+      "high": 202.88, 
+      "low": 196.69, 
+      "close": 197.12, 
+      "volume": 24129481, 
+      "adj_high": 202.88, 
+      "adj_low": 196.69, 
+      "adj_close": 197.12, 
+      "adj_open": 198.53, 
+      "adj_volume": 24129481, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-17T00:00:00+0000" 
+    }, 
+    { 
+      "open": 194.365, 
+      "high": 200.64, 
+      "low": 194.11, 
+      "close": 198.16, 
+      "volume": 32248640, 
+      "adj_high": 200.64, 
+      "adj_low": 194.11, 
+      "adj_close": 198.16, 
+      "adj_open": 194.365, 
+      "adj_volume": 32248640, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-16T00:00:00+0000" 
+    }, 
+    { 
+      "open": 192.71, 
+      "high": 194.34, 
+      "low": 191.26, 
+      "close": 191.38, 
+      "volume": 18883217, 
+      "adj_high": 194.34, 
+      "adj_low": 191.26, 
+      "adj_close": 191.38, 
+      "adj_open": 192.71, 
+      "adj_volume": 18883217, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-13T00:00:00+0000" 
+    }, 
+    { 
+      "open": 196.3, 
+      "high": 196.7053, 
+      "low": 193.28, 
+      "close": 193.63, 
+      "volume": 25197760, 
+      "adj_high": 196.7053, 
+      "adj_low": 193.28, 
+      "adj_close": 193.63, 
+      "adj_open": 196.3, 
+      "adj_volume": 25197757, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-12T00:00:00+0000" 
+    }, 
+    { 
+      "open": 186.7, 
+      "high": 196.89, 
+      "low": 186.26, 
+      "close": 196.71, 
+      "volume": 41664488, 
+      "adj_high": 196.89, 
+      "adj_low": 186.26, 
+      "adj_close": 196.71, 
+      "adj_open": 186.7, 
+      "adj_volume": 41664489, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-11T00:00:00+0000" 
+    }, 
+    { 
+      "open": 184.535, 
+      "high": 188.03, 
+      "low": 182.67, 
+      "close": 186.53, 
+      "volume": 34317441, 
+      "adj_high": 188.03, 
+      "adj_low": 182.67, 
+      "adj_close": 186.53, 
+      "adj_open": 184.535, 
+      "adj_volume": 34317438, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-10T00:00:00+0000" 
+    }, 
+    { 
+      "open": 175.715, 
+      "high": 178.04, 
+      "low": 175.4, 
+      "close": 177.1, 
+      "volume": 19887789, 
+      "adj_high": 178.04, 
+      "adj_low": 175.4, 
+      "adj_close": 177.1, 
+      "adj_open": 175.715, 
+      "adj_volume": 19887786, 
+      "split_factor": 1, 
+      "dividend": 0.2, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-09T00:00:00+0000" 
+    }, 
+    { 
+      "open": 173.88, 
+      "high": 176.8389, 
+      "low": 173.55, 
+      "close": 176.49, 
+      "volume": 13319549, 
+      "adj_high": 176.8389, 
+      "adj_low": 173.55, 
+      "adj_close": 176.29, 
+      "adj_open": 173.88, 
+      "adj_volume": 13319549, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-06T00:00:00+0000" 
+    }, 
+    { 
+      "open": 177.32, 
+      "high": 177.71, 
+      "low": 174.01, 
+      "close": 174.31, 
+      "volume": 16145520, 
+      "adj_high": 177.71, 
+      "adj_low": 174.01, 
+      "adj_close": 174.31, 
+      "adj_open": 177.32, 
+      "adj_volume": 16145520, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-05T00:00:00+0000" 
+    }, 
+    { 
+      "open": 172.78, 
+      "high": 176.43, 
+      "low": 172.75, 
+      "close": 176.09, 
+      "volume": 18239842, 
+      "adj_high": 176.43, 
+      "adj_low": 172.75, 
+      "adj_close": 176.09, 
+      "adj_open": 172.78, 
+      "adj_volume": 18239842, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-04T00:00:00+0000" 
+    }, 
+    { 
+      "open": 173.1981, 
+      "high": 174.32, 
+      "low": 172.51, 
+      "close": 173.02, 
+      "volume": 15721483, 
+      "adj_high": 174.32, 
+      "adj_low": 172.51, 
+      "adj_close": 173.02, 
+      "adj_open": 173.12, 
+      "adj_volume": 15721483, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-03T00:00:00+0000" 
+    }, 
+    { 
+      "open": 170.32, 
+      "high": 173.6, 
+      "low": 170.27, 
+      "close": 172.98, 
+      "volume": 16593444, 
+      "adj_high": 173.6, 
+      "adj_low": 170.27, 
+      "adj_close": 172.98, 
+      "adj_open": 170.32, 
+      "adj_volume": 16593444, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-12-02T00:00:00+0000" 
+    }, 
+    { 
+      "open": 170.06, 
+      "high": 170.87, 
+      "low": 168.75, 
+      "close": 170.49, 
+      "volume": 9250712, 
+      "adj_high": 170.87, 
+      "adj_low": 168.75, 
+      "adj_close": 170.49, 
+      "adj_open": 170.06, 
+      "adj_volume": 9250712, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-11-29T00:00:00+0000" 
+    }, 
+    { 
+      "open": 170.68, 
+      "high": 171.14, 
+      "low": 169.67, 
+      "close": 170.82, 
+      "volume": 12433371, 
+      "adj_high": 171.14, 
+      "adj_low": 169.67, 
+      "adj_close": 170.82, 
+      "adj_open": 170.68, 
+      "adj_volume": 12433371, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-11-27T00:00:00+0000" 
+    }, 
+    { 
+      "open": 169.49, 
+      "high": 171.495, 
+      "low": 169.43, 
+      "close": 170.62, 
+      "volume": 14937478, 
+      "adj_high": 171.495, 
+      "adj_low": 169.43, 
+      "adj_close": 170.62, 
+      "adj_open": 169.49, 
+      "adj_volume": 14937478, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-11-26T00:00:00+0000" 
+    }, 
+    { 
+      "open": 175.455, 
+      "high": 175.58, 
+      "low": 165.31, 
+      "close": 169.24, 
+      "volume": 38839431, 
+      "adj_high": 175.58, 
+      "adj_low": 165.31, 
+      "adj_close": 169.24, 
+      "adj_open": 175.455, 
+      "adj_volume": 38839431, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "GOOG", 
+      "exchange": "XNAS", 
+      "date": "2024-11-21T00:00:00+0000" 
+    } 
+  ]; 
+ 
+  const amazon = [ 
+    { 
+      "open": 186.84, 
+      "high": 187.44, 
+      "low": 179.23, 
+      "close": 182.12, 
+      "volume": 48002540, 
+      "adj_high": 187.44, 
+      "adj_low": 179.23, 
+      "adj_close": 182.12, 
+      "adj_open": 186.84, 
+      "adj_volume": 48002540, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AMZN", 
+      "exchange": "XNAS", 
+      "date": "2025-04-14T00:00:00+0000" 
+    }, 
+    { 
+      "open": 179.93, 
+      "high": 185.86, 
+      "low": 178, 
+      "close": 184.87, 
+      "volume": 50594339, 
+      "adj_high": 185.86, 
+      "adj_low": 178, 
+      "adj_close": 184.87, 
+      "adj_open": 179.93, 
+      "adj_volume": 50594339, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AMZN", 
+      "exchange": "XNAS", 
+      "date": "2025-04-11T00:00:00+0000" 
+    }, 
+    { 
+      "open": 185.44, 
+      "high": 186.8692, 
+      "low": 175.8518, 
+      "close": 181.22, 
+      "volume": 68302045, 
+      "adj_high": 186.8692, 
+      "adj_low": 175.8518, 
+      "adj_close": 181.22, 
+      "adj_open": 185.44, 
+      "adj_volume": 68302045, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AMZN", 
+      "exchange": "XNAS", 
+      "date": "2025-04-10T00:00:00+0000" 
+    }, 
+    { 
+      "open": 167.145, 
+      "high": 178.1436, 
+      "low": 166, 
+      "close": 171, 
+      "volume": 123159359, 
+      "adj_high": 178.1436, 
+      "adj_low": 166, 
+      "adj_close": 171, 
+      "adj_open": 167.145, 
+      "adj_volume": 123159359, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AMZN", 
+      "exchange": "XNAS", 
+      "date": "2025-04-04T00:00:00+0000" 
+    }, 
+    { 
+      "open": 182.995, 
+      "high": 184.13, 
+      "low": 176.92, 
+      "close": 178.41, 
+      "volume": 95553617, 
+      "adj_high": 184.13, 
+      "adj_low": 176.92, 
+      "adj_close": 178.41, 
+      "adj_open": 182.995, 
+      "adj_volume": 95553617, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "AMZN", 
+      "exchange": "XNAS", 
+      "date": "2025-04-03T00:00:00+0000" 
+    }, 
+  ]; 
+ 
+ 
+  const tsla = [ 
+    { 
+      "open": 243.47, 
+      "high": 244.34, 
+      "low": 237.6833, 
+      "close": 241.37, 
+      "volume": 83404775, 
+      "adj_high": 244.34, 
+      "adj_low": 237.6833, 
+      "adj_close": 241.37, 
+      "adj_open": 243.47, 
+      "adj_volume": 82150839, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "TSLA", 
+      "exchange": "XNAS", 
+      "date": "2025-04-17T00:00:00+0000" 
+    }, 
+    { 
+      "open": 247.61, 
+      "high": 251.97, 
+      "low": 233.89, 
+      "close": 241.55, 
+      "volume": 112378737, 
+      "adj_high": 251.97, 
+      "adj_low": 233.89, 
+      "adj_close": 241.55, 
+      "adj_open": 247.61, 
+      "adj_volume": 112378737, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "TSLA", 
+      "exchange": "XNAS", 
+      "date": "2025-04-16T00:00:00+0000" 
+    }, 
+    { 
+      "open": 249.91, 
+      "high": 258.75, 
+      "low": 247.54, 
+      "close": 254.11, 
+      "volume": 79594318, 
+      "adj_high": 258.75, 
+      "adj_low": 247.54, 
+      "adj_close": 254.11, 
+      "adj_open": 249.91, 
+      "adj_volume": 79594318, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "TSLA", 
+      "exchange": "XNAS", 
+      "date": "2025-04-15T00:00:00+0000" 
+    }, 
+    { 
+      "open": 258.36, 
+      "high": 261.8, 
+      "low": 245.93, 
+      "close": 252.35, 
+      "volume": 100135241, 
+      "adj_high": 261.8, 
+      "adj_low": 245.93, 
+      "adj_close": 252.35, 
+      "adj_open": 258.36, 
+      "adj_volume": 100135241, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "TSLA", 
+      "exchange": "XNAS", 
+      "date": "2025-04-14T00:00:00+0000" 
+    }, 
+  ]; 
+ 
+  const msft = [ 
+    { 
+      "open": 373.44, 
+      "high": 374.3215, 
+      "low": 366.89, 
+      "close": 367.78, 
+      "volume": 20858907, 
+      "adj_high": 374.3215, 
+      "adj_low": 366.89, 
+      "adj_close": 367.78, 
+      "adj_open": 373.745, 
+      "adj_volume": 21120192, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "MSFT", 
+      "exchange": "XNAS", 
+      "date": "2025-04-17T00:00:00+0000" 
+    }, 
+    { 
+      "open": 380.495, 
+      "high": 381.61, 
+      "low": 368.2, 
+      "close": 371.61, 
+      "volume": 21585114, 
+      "adj_high": 381.61, 
+      "adj_low": 368, 
+      "adj_close": 371.61, 
+      "adj_open": 380.67, 
+      "adj_volume": 21967826, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "MSFT", 
+      "exchange": "XNAS", 
+      "date": "2025-04-16T00:00:00+0000" 
+    }, 
+    { 
+      "open": 388.505, 
+      "high": 391.89, 
+      "low": 384.21, 
+      "close": 385.73, 
+      "volume": 17074637, 
+      "adj_high": 391.89, 
+      "adj_low": 384.1599, 
+      "adj_close": 385.73, 
+      "adj_open": 388.505, 
+      "adj_volume": 17199890, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "MSFT", 
+      "exchange": "XNAS", 
+      "date": "2025-04-15T00:00:00+0000" 
+    }, 
+    { 
+      "open": 393.22, 
+      "high": 394.64, 
+      "low": 384.21, 
+      "close": 387.81, 
+      "volume": 18941747, 
+      "adj_high": 394.65, 
+      "adj_low": 384.21, 
+      "adj_close": 387.81, 
+      "adj_open": 393.22, 
+      "adj_volume": 19251172, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "MSFT", 
+      "exchange": "XNAS", 
+      "date": "2025-04-14T00:00:00+0000" 
+    }, 
+    { 
+      "open": 380.64, 
+      "high": 390.05, 
+      "low": 378.89, 
+      "close": 388.45, 
+      "volume": 23828700, 
+      "adj_high": 390.05, 
+      "adj_low": 378.89, 
+      "adj_close": 388.45, 
+      "adj_open": 380.635, 
+      "adj_volume": 23839220, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "MSFT", 
+      "exchange": "XNAS", 
+      "date": "2025-04-11T00:00:00+0000" 
+    }, 
+    { 
+      "open": 382.37, 
+      "high": 383.9, 
+      "low": 367.82, 
+      "close": 381.35, 
+      "volume": 37488366, 
+      "adj_high": 383.9, 
+      "adj_low": 367.8, 
+      "adj_close": 381.35, 
+      "adj_open": 382.06, 
+      "adj_volume": 38024368, 
+      "split_factor": 1, 
+      "dividend": 0, 
+      "symbol": "MSFT", 
+      "exchange": "XNAS", 
+      "date": "2025-04-10T00:00:00+0000" 
+    }, 
+  ]; 
+ 
+  const getData = async () => {
+    const response = await fetch('http://api.marketstack.com/v1/eod?access_key=ad1100e51ec2bbadb02859e8ec4654e3&symbols=AAPL');
+    const data = await response.json();
+    console.log(data.data);
+    const apl = data.data;
+    console.log(apl);
+};
+
+getData(); // Calling the function to execute it
+
+ 
+// getData(); 
+const stocks = [ 
+    { symbol: "AAPL", price: 175.25 }, 
+    { symbol: "GOOGL", price: 2843.66 }, 
+    { symbol: "AMZN", price: 3420.74 }, 
+    { symbol: "TSLA", price: 723.55 }, 
+    { symbol: "MSFT", price: 299.72 }, 
+]; 
+ 
+function updateAAPLPrices() { 
+  const container = document.getElementById("stockTicker"); 
+  container.innerHTML = ""; 
+ 
+  data1.forEach(stock => { 
+    // Simulate random change 
+    // const change = stock.open - stock.close; 
+    const change = (Math.random() * 4 - 2).toFixed(2); // -2.00 to +2.00 
+    stock.open = +(stock.close + parseFloat(change)).toFixed(2); 
+    const positive = parseFloat(change) >= 0; 
+ 
+    const ticker = document.createElement("div"); 
+    ticker.classList.add("ticker"); 
+ 
+    ticker.innerHTML = ` 
+        <div class="symbol">${stock.symbol} and date : ${stock.date}</div> 
+          <div class="price ${positive ? 'positive' : 'negative'}"> 
+        $${stock.close} (${positive ? '+' : ''}${change}) 
+        </div> 
+    `; 
+ 
+    container.appendChild(ticker); 
+  }); 
+ 
+  google.forEach(stock => { 
+    // Simulate random change 
+    // const change = stock.open - stock.close; 
+    const change = (Math.random() * 4 - 2).toFixed(2); // -2.00 to +2.00 
+    stock.open = +(stock.close + parseFloat(change)).toFixed(2); 
+    const positive = parseFloat(change) >= 0; 
+ 
+    const ticker = document.createElement("div"); 
+    ticker.classList.add("ticker"); 
+ 
+    ticker.innerHTML = ` 
+        <div class="symbol">${stock.symbol} and date : ${stock.date}</div> 
+          <div class="price ${positive ? 'positive' : 'negative'}"> 
+        $${stock.close} (${positive ? '+' : ''}${change}) 
+        </div> 
+    `; 
+ 
+    container.appendChild(ticker); 
+  }); 
+ 
+  amazon.forEach(stock => { 
+    // Simulate random change 
+    // const change = stock.open - stock.close; 
+    const change = (Math.random() * 4 - 2).toFixed(2); // -2.00 to +2.00 
+    stock.open = +(stock.close + parseFloat(change)).toFixed(2); 
+    const positive = parseFloat(change) >= 0; 
+ 
+    const ticker = document.createElement("div"); 
+    ticker.classList.add("ticker"); 
+ 
+    ticker.innerHTML = ` 
+        <div class="symbol">${stock.symbol} and date : ${stock.date}</div> 
+          <div class="price ${positive ? 'positive' : 'negative'}"> 
+        $${stock.close} (${positive ? '+' : ''}${change}) 
+        </div> 
+    `; 
+ 
+    container.appendChild(ticker); 
+  }); 
+ 
+  tsla.forEach(stock => { 
+    // Simulate random change 
+    // const change = stock.open - stock.close; 
+    const change = (Math.random() * 4 - 2).toFixed(2); // -2.00 to +2.00 
+    stock.open = +(stock.close + parseFloat(change)).toFixed(2); 
+    const positive = parseFloat(change) >= 0; 
+ 
+    const ticker = document.createElement("div"); 
+    ticker.classList.add("ticker"); 
+ 
+    ticker.innerHTML = ` 
+        <div class="symbol">${stock.symbol} and date : ${stock.date}</div> 
+          <div class="price ${positive ? 'positive' : 'negative'}"> 
+        $${stock.close} (${positive ? '+' : ''}${change}) 
+        </div> 
+    `; 
+ 
+    container.appendChild(ticker); 
+  }); 
+ 
+  msft.forEach(stock => { 
+    // Simulate random change 
+    // const change = stock.open - stock.close; 
+    const change = (Math.random() * 4 - 2).toFixed(2); // -2.00 to +2.00 
+    stock.open = +(stock.close + parseFloat(change)).toFixed(2); 
+    const positive = parseFloat(change) >= 0; 
+ 
+    const ticker = document.createElement("div"); 
+    ticker.classList.add("ticker"); 
+ 
+    ticker.innerHTML = ` 
+        <div class="symbol">${stock.symbol} and date : ${stock.date}</div> 
+          <div class="price ${positive ? 'positive' : 'negative'}"> 
+        $${stock.close} (${positive ? '+' : ''}${change}) 
+        </div> 
+    `; 
+ 
+    container.appendChild(ticker); 
+  }); 
+ 
+} 
+ 
+// Initial render 
+updateAAPLPrices(); 
+ 
+// Update every 3 seconds to simulate live feed 
+setInterval(updateAAPLPrices, 6000); 
+ 
+// Sentiment chart setup with distinct variable for ctx 
+let sentimentData = { 
+  positive: 65, 
+  neutral: 25, 
+  negative: 10 
+}; 
+ 
+// Setup Chart.js pie chart 
+const sentimentCanvas = document.getElementById("sentimentChart"); 
+const sentimentCtx = sentimentCanvas.getContext("2d"); 
+ 
+const sentimentChart = new Chart(sentimentCtx, { 
+  type: 'pie', 
+  data: { 
+    labels: ['Positive �', 'Neutral �', 'Negative �'], 
+    datasets: [{ 
+      label: 'Sentiment', 
+      data: [sentimentData.positive, sentimentData.neutral, 
+sentimentData.negative], 
+      backgroundColor: ['#2ecc71', '#f1c40f', '#e74c3c'], 
+      borderColor: '#161b22', 
+      borderWidth: 2 
+    }] 
+  }, 
+  options: { 
+    responsive: true, 
+    plugins: { 
+      legend: { 
+        labels: { 
+          color: '#c9d1d9' 
+        } 
+      } 
+    } 
+  } 
+}); 
+ 
+// Function to simulate sentiment spike updates 
+function updateSentiment() { 
+  const newPositive = Math.floor(Math.random() * 60) + 20; 
+  const newNeutral = Math.floor(Math.random() * (100 - newPositive)); 
+  const newNegative = 100 - newPositive - newNeutral; 
+ 
+  sentimentData = { 
+    positive: newPositive, 
+    neutral: newNeutral, 
+    negative: newNegative 
+  }; 
+ 
+  // Update chart 
+  sentimentChart.data.datasets[0].data = [ 
+    sentimentData.positive, 
+    sentimentData.neutral, 
+    sentimentData.negative 
+  ]; 
+  sentimentChart.update(); 
+ 
+  // Update text 
+  document.getElementById("posPercent").textContent = 
+`${sentimentData.positive}%`; 
+  document.getElementById("neuPercent").textContent = 
+`${sentimentData.neutral}%`; 
+  document.getElementById("negPercent").textContent = 
+`${sentimentData.negative}%`; 
+ 
+  // Spike Alert 
+  const alert = document.getElementById("alertSpike"); 
+  if (sentimentData.negative >= 40) { 
+    alert.style.display = "block"; 
+  } else { 
+    alert.style.display = "none"; 
+  } 
+} 
+ 
+// Initial & interval-based updates 
+updateSentiment(); 
+setInterval(updateSentiment, 5000); 
+ 
+ 
+function updateInvestmentInsights() { 
+    // Simulating Buy/Sell Signal (Random Logic) 
+    const buySellSignal = (Math.random() > 0.5) ? 'Buy' : 'Sell'; 
+    const trendSummary = (Math.random() > 0.5) ? 'Volatility Increasing' : 'High Interest Today'; 
+    
+    // Updating Buy/Sell Signal 
+    document.getElementById('buy-sell-signal').textContent = `Signal: ${buySellSignal}`; 
+ 
+    // Updating Trend Summary 
+    document.getElementById('trend-summary').textContent = `Trend: ${trendSummary}`;
+    
+    // Optional console logs for debugging
+    console.log("Signal:", buySellSignal);
+    console.log("Trend Summary:", trendSummary);
+}
+ 
+ 
+  // Initial call to populate the data 
+  updateInvestmentInsights(); 
+ 
+  // Updating data every 5 seconds 
+  setInterval(updateInvestmentInsights, 5000); 
+   
+   
+ 
+  const buttons = document.querySelectorAll('.case-study button'); 
+ 
+  buttons.forEach(button => { 
+    button.addEventListener('click', () => { 
+      alert('Redirecting to full story...'); 
+      // Here you could implement a redirect or popup for more information 
+    }); 
+  }); 
+ 
+  function showWidget() { 
+    const widget = document.getElementById("live-updates-widget"); 
+    widget.style.display = "block"; 
+  } 
+ 
+  function closeWidget() { 
+    const widget = document.getElementById("live-updates-widget"); 
+    widget.style.display = "none"; 
+  } 
+ 
+  // Automatically show the widget after a certain period (for demo purposes) 
+  setTimeout(showWidget, 3000); // Show after 3 seconds 
+ 
+  </script> 
+</body> 
+</html> 
